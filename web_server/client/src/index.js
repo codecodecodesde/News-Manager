@@ -5,7 +5,7 @@ import App from './App/App';
 import registerServiceWorker from './registerServiceWorker';
 
 //TODO: remove later
-import LoginPage from './Login/LoginPage';
+import SignUpPage from './SignUp/SignUpPage';
 
-ReactDOM.render(<LoginPage />, document.getElementById('root'));
+ReactDOM.render(<SignUpPage />, document.getElementById('root'));
 registerServiceWorker();
