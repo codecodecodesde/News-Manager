@@ -1,8 +1,10 @@
 var express = require('express');
+var logger = require('../logger');
 var router = express.Router();
 
 /* GET news page. */
 router.get('/', function(req, res, next) {
+  logger.info('Got request for path:\'/news\'');
   news=[{
     "source": "THe Wall Street Journal",
     "title": "Berkshire Hathaway Benefits From US Tax Plan",
