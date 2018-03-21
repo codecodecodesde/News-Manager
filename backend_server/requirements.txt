@@ -1,0 +1,3 @@
+jsonrpclib-pelix
+pymongo
+pika
