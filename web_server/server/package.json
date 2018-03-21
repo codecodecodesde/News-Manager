@@ -11,6 +11,7 @@
     "debug": "~2.6.9",
     "express": "~4.15.5",
     "jade": "~1.11.0",
+    "jayson": "^2.0.5",
     "morgan": "~1.9.0",
     "serve-favicon": "~2.4.5",
     "winston": "^3.0.0-rc3"
