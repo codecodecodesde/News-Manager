@@ -1,3 +1,5 @@
+# Folder view configuration files
 .DS_Store
-/__pycache__
-/utils/__pycache__
+
+# Compiled Python files
+*.pyc
