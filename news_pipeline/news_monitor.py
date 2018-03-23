@@ -17,7 +17,19 @@ REDIS_PORT = 6379
 SCRAPE_NEWS_TASK_QUEUE_URL = "amqp://iyivlewx:Cd0kAm5crqwb8lcNZ_XVvbUMDPmI_7it@skunk.rmq.cloudamqp.com/iyivlewx"
 SCRAPE_NEWS_TASK_QUEUE_NAME = "news-manager-scrape-task"
 
-NEWS_SOURCES = ['cnn']
+NEWS_SOURCES = [
+    'bbc-news',
+    'bbc-sport',
+    'bloomberg',
+    'cnn',
+    'entertainment-weekly',
+    'espn',
+    'ign',
+    'techcrunch',
+    'the-new-york-times',
+    'the-wall-street-journal',
+    'the-washington-post'
+]
 
 #connect redis_client and cloudAMQP
 redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
@@ -41,7 +53,7 @@ def run():
                 redis_client.expire(news_digest, NEWS_TIME_OUT_IN_SECONDS)
                 cloudAMQP_client.sendMessage(news)
 
-        print ("Fetch %d news" % num_Of_new_news)
+        print ("monitor found %d news" % num_Of_new_news)
 
         cloudAMQP_client.sleep(SLEEP_TIME_IN_SECONDS)
 

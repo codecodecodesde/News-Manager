@@ -9,8 +9,8 @@ from cloudAMQP_client import CloudAMQPClient
 SCRAPE_NEWS_TASK_QUEUE_URL = "amqp://iyivlewx:Cd0kAm5crqwb8lcNZ_XVvbUMDPmI_7it@skunk.rmq.cloudamqp.com/iyivlewx"
 SCRAPE_NEWS_TASK_QUEUE_NAME = "news-manager-scrape-task"
 
-#DEDUPE_NEWS_TASK_QUEUE_URL = #TODO: use your own config.
-#DEDUPE_NEWS_TASK_QUEUE_NAME = #TODO: use your own config.
+DEDUPE_NEWS_TASK_QUEUE_URL = "amqp://gxoshjxp:jUcy9JVFqWn5Zm-ryAcARjucv6wTUvyZ@skunk.rmq.cloudamqp.com/gxoshjxp"
+DEDUPE_NEWS_TASK_QUEUE_NAME = "news-manager-dedupe-task"
 
 def clearQueue(queue_url, queue_name):
     scrape_news_queue_client = CloudAMQPClient(queue_url, queue_name)
@@ -28,4 +28,4 @@ def clearQueue(queue_url, queue_name):
 
 if __name__ == "__main__":
     clearQueue(SCRAPE_NEWS_TASK_QUEUE_URL, SCRAPE_NEWS_TASK_QUEUE_NAME)
-    #clearQueue(DEDUPE_NEWS_TASK_QUEUE_URL, DEDUPE_NEWS_TASK_QUEUE_NAME)
+    clearQueue(DEDUPE_NEWS_TASK_QUEUE_URL, DEDUPE_NEWS_TASK_QUEUE_NAME)
