@@ -1,6 +1,6 @@
 #!/bin/bash
-redis-server
-mongod
+redis-server &
+mongod &
 
 pip3 install -r requirements.txt
 
