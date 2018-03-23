@@ -17,7 +17,7 @@ REDIS_PORT = 6379
 SCRAPE_NEWS_TASK_QUEUE_URL = "amqp://iyivlewx:Cd0kAm5crqwb8lcNZ_XVvbUMDPmI_7it@skunk.rmq.cloudamqp.com/iyivlewx"
 SCRAPE_NEWS_TASK_QUEUE_NAME = "news-manager-scrape-task"
 
-NEWS_SOURCES = ['bloomberg']
+NEWS_SOURCES = ['cnn']
 
 #connect redis_client and cloudAMQP
 redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
