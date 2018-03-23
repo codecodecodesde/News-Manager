@@ -1,31 +1,17 @@
 var express = require('express');
 var logger = require('../logger');
 var router = express.Router();
+var rpc_client = require('../rpc_client/rpc_client');
 
 /* GET news page. */
-router.get('/', function(req, res, next) {
-  logger.info('Got request for path:\'/news\'');
-  news=[{
-    "source": "THe Wall Street Journal",
-    "title": "Berkshire Hathaway Benefits From US Tax Plan",
-    "description": "This is a description",
-    "url":"https://www.cnn.com/2018/03/12/europe/theresa-may-russia-spy-poisoning-intl/index.html",
-    "urlToImage": "https://cdn.cnn.com/cnnnext/dam/assets/180306171056-sergei-yulia-skripal-split-exlarge-169.jpg",
-    "publishedAt": "...",
-    "digest":"3RjuEomJo2601syZbU7OHA==\n",
-    "reason": "recommand"
-  },{
-    "source": "lalalalalal",
-    "title": "Berkshire Hathaway Benefits From US Tax Plan",
-    "description": "lalalala",
-    "url":"https://www.cnn.com/2018/03/12/europe/theresa-may-russia-spy-poisoning-intl/index.html",
-    "urlToImage": "https://cdn.cnn.com/cnnnext/dam/assets/180306171056-sergei-yulia-skripal-split-exlarge-169.jpg",
-    "publishedAt": "...",
-    "digest":"3RjuEomJo2601syZbU7OHb==\n",
-    "reason": "recommand"
-  }];
+router.get('/userId/:userId/pageNum/:pageNum', function(req, res, next) {
+  console.log("Fetching news...");
+  user_id = req.params['userId'];
+  page_num = req.params['pageNum'];
 
-  res.json(news);
+  rpc_client.getNewsSummariesForUser(user_id, page_num, function(response) {
+    res.json(response);
+  });
 });
 
 module.exports = router;
