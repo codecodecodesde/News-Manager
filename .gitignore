@@ -3,3 +3,5 @@
 
 # Compiled Python files
 *.pyc
+
+*.rdb
