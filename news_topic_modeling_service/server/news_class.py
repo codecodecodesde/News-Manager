@@ -1,6 +1,6 @@
 class_map = {
   '1' : "World",
-  '2' : "U.S.",
+  '2' : "US",
   '3' : "Business",
   '4' : "Technology",
   '5' : "Entertainment",

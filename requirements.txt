@@ -8,3 +8,6 @@ numpy
 scipy
 lxml
 python-dateutil
+tensorflow
+pandas
+watchdog

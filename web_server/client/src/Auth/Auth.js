@@ -8,7 +8,7 @@ class Auth {
     return localStorage.getItem('token') !== null;
   }
 
-  static deAuthenticateUser() {
+  static deauthenticateUser() {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
   }

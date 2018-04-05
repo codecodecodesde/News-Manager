@@ -19,8 +19,16 @@ def getNewsSummariesForUser(user_id, page_num):
     print("getNewsSummariesForUser is called with %s and %s" % (user_id, page_num))
     return operations.getNewsSummariesForUser(user_id, page_num)
 
+def log_news_click_for_user(user_id, news_id):
+    print("log_news_click_for_user is called with %s and %s" % (user_id, news_id))
+    operations.logNewsClickForUser(user_id, news_id)
+
 RPC_SERVER = SimpleJSONRPCServer((SERVER_HOST, SERVER_PORT))
 RPC_SERVER.register_function(add, 'add')
 RPC_SERVER.register_function(getOneNews, 'getOneNews')
 RPC_SERVER.register_function(getNewsSummariesForUser, 'getNewsSummariesForUser')
+RPC_SERVER.register_function(log_news_click_for_user, 'logNewsClickForUser')
+
+print("Starting RPC server on %s:%d" % (SERVER_HOST, SERVER_PORT))
+
 RPC_SERVER.serve_forever()
