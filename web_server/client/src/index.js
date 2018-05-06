@@ -1,8 +1,8 @@
+import Base from './Base/Base';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import { browserHistory, Router } from 'react-router';
-import routes from './routes';
+import { BrowserRouter as Router  } from 'react-router-dom';
 
-ReactDOM.render(<Router history={browserHistory} routes={routes} />, document.getElementById('root'));
+ReactDOM.render(<Router><Base /></Router>, document.getElementById('root'));
 registerServiceWorker();

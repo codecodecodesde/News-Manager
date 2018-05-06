@@ -1,58 +1,58 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import LoginForm from './LoginForm'
 import Auth from '../Auth/Auth';
+import LoginForm from './LoginForm';
+import React from 'react';
 
 class LoginPage extends React.Component {
-  constructor(props, context){
-    super(props, context);
+  constructor() {
+    super();
+
     this.state = {
       errors: {},
       user: {
         email: '',
         password: ''
       }
-    }
+    };
   }
 
-  processForm(e) {
-    e.preventDefault();
+  processForm(event) {
+    event.preventDefault();
 
     const email = this.state.user.email;
     const password = this.state.user.password;
 
     console.log('email:', email);
-    console.log('password:', password);
+    console.log('password', password);
 
-    //post login data
-    const url = "http://" + window.location.hostname + ":3000" + "/auth/login";
+    // Post login data.
+    const url = 'http://' + window.location.host + '/auth/login';
     const request = new Request(
       url,
       {
-        method: "POST",
+        method:'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          email: email,
-          password: password
+          email: this.state.user.email,
+          password: this.state.user.password
         })
-      }
-    );
+      });
 
     fetch(request).then(response => {
-      if(response.status === 200) {
+      if (response.status === 200) {
         this.setState({errors: {}});
+
         response.json().then(json => {
           console.log(json);
           Auth.authenticateUser(json.token, email);
-          this.context.router.replace('/');
-        })
-      }else{
-        console.log("Login failed");
+          window.location.replace('/');
+        });
+      } else {
+        console.log('Login failed');
         response.json().then(json => {
-          const errors = json.errors? json.errors : {};
+          const errors = json.errors ? json.errors : {};
           errors.summary = json.message;
           this.setState({errors});
         });
@@ -60,30 +60,22 @@ class LoginPage extends React.Component {
     });
   }
 
-  changeUser(e) {
-    const field = e.target.name;
+  changeUser(event) {
+    const field = event.target.name;
     const user = this.state.user;
-    user[field] = e.target.value;
+    user[field] = event.target.value;
 
-    this.setState({
-      user: user
-    })
+    this.setState({user});
   }
-
 
   render() {
     return (
       <LoginForm
-      onSubmit={(e) => this.processForm(e)}
-      onChange={(e) => this.changeUser(e)}
-      errors={this.state.errors}
-      user={this.state.user} />
-    );
+        onSubmit={(e) => this.processForm(e)}
+        onChange={(e) => this.changeUser(e)}
+        errors={this.state.errors} />
+    )
   }
-}
-
-LoginPage.contextTypes = {
-  router: PropTypes.object.isRequired
 }
 
 export default LoginPage;

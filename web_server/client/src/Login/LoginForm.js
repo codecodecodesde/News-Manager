@@ -1,13 +1,13 @@
+
+import './LoginForm.css';
+
 import React from 'react';
-import { Link } from 'react-router';
-import PropTypes from 'prop-types';
-import'./LoginForm.css';
+import { Link } from 'react-router-dom'
 
 const LoginForm = ({
   onSubmit,
   onChange,
   errors,
-  user,
 }) => (
   <div className="container">
     <div className="card-panel login-panel">
@@ -38,12 +38,5 @@ const LoginForm = ({
     </div>
   </div>
 );
-
-LoginForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
-}
 
 export default LoginForm;

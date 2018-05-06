@@ -25,14 +25,15 @@ class NewsPanel extends React.Component {
   }
 
   loadMoreNews() {
+    console.log('Actually triggered loading more news');
     if(this.state.loadedAll == true) {
       return;
     }
 
     console.log('Loading more news');
 
-    const news_url = 'http://' + window.location.hostname + ':3000' +
-    '/news/userId/' + Auth.getEmail() + '/pageNum/' + this.state.pageNum;
+    const news_url = 'http://' + window.location.host +
+    '/news/userId=' + Auth.getEmail() + "&pageNum=" + this.state.pageNum;    
     const request = new Request(encodeURI(news_url), {
       method: 'GET',
       headers: {

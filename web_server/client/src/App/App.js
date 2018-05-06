@@ -4,7 +4,6 @@ import './App.css';
 
 import React from 'react';
 import logo from './logo.png';
-
 import NewsPanel from '../NewsPanel/NewsPanel';
 
 class App extends React.Component {

@@ -1,13 +1,13 @@
 import './SignUpForm.css';
-import { Link } from 'react-router';
-import PropTypes from 'prop-types';
+
 import React from 'react';
+import { Link } from 'react-router-dom'
+
 
 const SignUpForm = ({
   onSubmit,
   onChange,
   errors,
-  user,
 }) => (
   <div className="container">
     <div className="card-panel signup-panel">
@@ -44,12 +44,5 @@ const SignUpForm = ({
     </div>
   </div>
 );
-
-SignUpForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
-};
 
 export default SignUpForm;

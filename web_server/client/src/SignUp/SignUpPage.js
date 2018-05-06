@@ -1,11 +1,12 @@
-import PropTypes from 'prop-types';
+import Auth from '../Auth/Auth';
 import React from 'react';
 import SignUpForm from './SignUpForm';
 
 class SignUpPage extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
 
+    // set the initial component state
     this.state = {
       errors: {},
       user: {
@@ -17,6 +18,7 @@ class SignUpPage extends React.Component {
   }
 
   processForm(event) {
+    // prevent default action. in this case, action is the form submission event
     event.preventDefault();
 
     const email = this.state.user.email;
@@ -31,8 +33,8 @@ class SignUpPage extends React.Component {
       return;
     }
 
-    // Post registeration data
-    const url = 'http://' + window.location.hostname + ':3000' + '/auth/signup';
+    // Post registeration data.
+    const url = 'http://' + window.location.host + '/auth/signup';
     const request = new Request(
       url,
       {method:'POST', headers: {
@@ -47,10 +49,12 @@ class SignUpPage extends React.Component {
 
     fetch(request).then(response => {
       if (response.status === 200) {
-        this.setState({errors: {}});
+        this.setState({
+          errors: {}
+        });
 
         // change the current URL to /login
-        this.context.router.replace('/login');
+        window.location.replace('/login');
       } else {
         response.json().then(json => {
           console.log(json);
@@ -68,19 +72,16 @@ class SignUpPage extends React.Component {
     const user = this.state.user;
     user[field] = event.target.value;
 
-    this.setState({
-      user : user
-    });
+    this.setState({user});
 
+    const errors = this.state.errors;
     if (this.state.user.password !== this.state.user.confirm_password) {
-      const errors = this.state.errors;
       errors.password = "Password and Confirm Password don't match.";
-      this.setState({errors});
     } else {
-      const errors = this.state.errors;
       errors.password = '';
-      this.setState({errors});
     }
+
+    this.setState({errors});
   }
 
   render() {
@@ -89,14 +90,9 @@ class SignUpPage extends React.Component {
         onSubmit={(e) => this.processForm(e)}
         onChange={(e) => this.changeUser(e)}
         errors={this.state.errors}
-        user={this.state.user}
       />
     );
   }
 }
-
-SignUpPage.contextTypes = {
-  router: PropTypes.object.isRequired
-};
 
 export default SignUpPage;
