@@ -5,3 +5,7 @@
 *.pyc
 
 *.rdb
+
+web_server/server/node_modules
+
+web_server/client/node_modules
