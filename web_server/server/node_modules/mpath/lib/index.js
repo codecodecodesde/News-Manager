@@ -69,9 +69,10 @@ exports.get = function (path, o, special, map) {
     if (lookup) {
       obj = lookup(obj, part);
     } else {
-      obj = special && obj[special]
-        ? obj[special][part]
-        : obj[part];
+      var _from = special && obj[special] ? obj[special] : obj;
+      obj = _from instanceof Map ?
+        _from.get(part) :
+        _from[part];
     }
 
     if (!obj) return map(obj);
@@ -134,7 +135,7 @@ exports.unset = function (path, o) {
       delete cur[parts[i]];
       return true;
     }
-    cur = cur[parts[i]];
+    cur = cur instanceof Map ? cur.get(parts[i]) : cur[parts[i]];
   }
 
   return true;
@@ -178,8 +179,9 @@ exports.set = function (path, val, o, special, map, _copying) {
   // the existance of $ in a path tells us if the user desires
   // the copying of an array instead of setting each value of
   // the array to the one by one to matching positions of the
-  // current array.
-  var copy = _copying || /\$/.test(path)
+  // current array. Unless the user explicitly opted out by passing
+  // false, see Automattic/mongoose#6273
+  var copy = _copying || (/\$/.test(path) && _copying !== false)
     , obj = o
     , part
 
@@ -213,9 +215,10 @@ exports.set = function (path, val, o, special, map, _copying) {
     if (lookup) {
       obj = lookup(obj, part);
     } else {
-      obj = special && obj[special]
-        ? obj[special][part]
-        : obj[part];
+      var _to = special && obj[special] ? obj[special] : obj;
+      obj = _to instanceof Map ?
+        _to.get(part) :
+        _to[part];
     }
 
     if (!obj) return;
@@ -260,6 +263,8 @@ exports.set = function (path, val, o, special, map, _copying) {
   } else {
     if (lookup) {
       lookup(obj, part, map(val));
+    } else if (obj instanceof Map) {
+      obj.set(part, map(val));
     } else {
       obj[part] = map(val);
     }

@@ -7,10 +7,12 @@
 module.exports = function(schema) {
   // ensure the documents receive an id getter unless disabled
   var autoIdGetter = !schema.paths['id'] &&
-      (!schema.options.noVirtualId && schema.options.id);
-  if (autoIdGetter) {
-    schema.virtual('id').get(idGetter);
+    (!schema.options.noVirtualId && schema.options.id);
+  if (!autoIdGetter) {
+    return;
   }
+
+  schema.virtual('id').get(idGetter);
 };
 
 /*!

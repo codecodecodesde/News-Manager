@@ -53,6 +53,9 @@ var Query = function(bson, ns, query, options) {
   this.returnFieldSelector = options.returnFieldSelector || null;
   this.requestId = Query.getRequestId();
 
+  // special case for pre-3.2 find commands, delete ASAP
+  this.pre32Limit = options.pre32Limit;
+
   // Serialization option
   this.serializeFunctions =
     typeof options.serializeFunctions === 'boolean' ? options.serializeFunctions : false;
@@ -315,7 +318,8 @@ GetMore.prototype.toBin = function() {
 /**************************************************************
  * KILLCURSOR
  **************************************************************/
-var KillCursor = function(bson, cursorIds) {
+var KillCursor = function(bson, ns, cursorIds) {
+  this.ns = ns;
   this.requestId = _requestId++;
   this.cursorIds = cursorIds;
 };

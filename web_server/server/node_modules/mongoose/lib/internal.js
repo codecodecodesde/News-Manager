@@ -16,6 +16,7 @@ function InternalCache() {
   this.adhocPaths = undefined;
   this.removing = undefined;
   this.inserting = undefined;
+  this.saving = undefined;
   this.version = undefined;
   this.getters = {};
   this._id = undefined;
@@ -25,6 +26,7 @@ function InternalCache() {
   this.scope = undefined;
   this.activePaths = new ActiveRoster;
   this.pathsToScopes = {};
+  this.session = null;
 
   // embedded docs
   this.ownerDocument = undefined;
