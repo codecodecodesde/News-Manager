@@ -8,6 +8,9 @@ import tensorflow as tf
 import time
 
 from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer
+from nltk.corpus import stopwords
+from nltk.stem.porter import PorterStemmer
+from nltk.tokenize import word_tokenize
 from tensorflow.contrib.learn.python.learn.estimators import model_fn
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -36,6 +39,8 @@ vocab_processor = None
 
 classifier = None
 
+stemmer = PorterStemmer()
+stop_words = set(stopwords.words('english'))
 
 def restoreVars():
     with open(VARS_FILE, 'rb') as f:
@@ -88,6 +93,10 @@ observer.start()
 
 
 def classify(text):
+    text_tokens = word_tokenize(text)
+    stemmed_tokens = [stemmer.stem(w.lower()) for w in text_tokens if not w in stop_words]
+    norm_sentence = ' '.join(stemmed_tokens)
+    
     text_series = pd.Series([text])
     predict_x = np.array(list(vocab_processor.transform(text_series)))
     print(predict_x)

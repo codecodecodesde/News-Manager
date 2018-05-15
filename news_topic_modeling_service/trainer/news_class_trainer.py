@@ -5,22 +5,36 @@ import pandas as pd
 import pickle
 import shutil
 import tensorflow as tf
+import logging
 
 from sklearn import metrics
+from nltk.corpus import stopwords
+from nltk.stem.porter import PorterStemmer
+from nltk.tokenize import word_tokenize
+from os.path import join
+from os.path import normpath
 
 learn = tf.contrib.learn
 
 REMOVE_PREVIOUS_MODEL = True
 
-MODEL_OUTPUT_DIR = '../model/'
-DATA_SET_FILE = '../data/labeled_news.csv'
-VARS_FILE = '../model/vars'
-VOCAB_PROCESSOR_SAVE_FILE = '../model/vocab_procesor_save_file'
-MAX_DOCUMENT_LENGTH = 100
+MODEL_OUTPUT_DIR = normpath(join(os.path.dirname(__file__), '../model/'))
+DATA_SET_FILE = normpath(join(os.path.dirname(__file__), '../data/labeled_news.csv'))
+VARS_FILE = normpath(join(os.path.dirname(__file__), '../model/vars'))
+VOCAB_PROCESSOR_SAVE_FILE = normpath(join(os.path.dirname(__file__), '../model/vocab_procesor_save_file'))
+MAX_DOCUMENT_LENGTH = 200
 N_CLASSES = 8
 
 # Training parms
-STEPS = 200
+STEPS = 100
+
+LOGGER_FORMAT = '%(asctime)s - %(message)s'
+logging.basicConfig(format=LOGGER_FORMAT)
+LOGGER = logging.getLogger('news_class_trainer')
+LOGGER.setLevel(logging.DEBUG)
+
+stemmer = PorterStemmer()
+stop_words = set(stopwords.words('english'))
 
 def main(unused_argv):
     if REMOVE_PREVIOUS_MODEL:
@@ -28,17 +42,40 @@ def main(unused_argv):
         print("Removing previous model...")
         shutil.rmtree(MODEL_OUTPUT_DIR)
         os.mkdir(MODEL_OUTPUT_DIR)
+    
+    # Random shuffle
+    df.sample(frac=1)
 
     # Prepare training and testing data
     df = pd.read_csv(DATA_SET_FILE, header=None)
     train_df = df[0:400]
     test_df = df.drop(train_df.index)
 
-    # x - news title, y - class
-    x_train = train_df[1]
+    # x - news description, y - class
+    x_train = train_df[2]
     y_train = train_df[0]
-    x_test = test_df[1]
+    x_test = test_df[2]
     y_test = test_df[0]
+
+    # tokenize sentences
+    x_train = [word_tokenize(sentence) for sentence in x_train.tolist()]
+    x_test = [word_tokenize(sentence) for sentence in x_test.tolist()]
+
+    # Stemming words.
+    norm_x_train = []
+    norm_x_test = []
+    for tokens in x_train:
+        stemmed_tokens = [stemmer.stem(w.lower()) for w in tokens if not w in stop_words]
+        norm_sentence =  ' '.join(stemmed_tokens)
+        norm_x_train.append(norm_sentence)
+
+    for tokens in x_test:
+        stemmed_tokens = [stemmer.stem(w.lower()) for w in tokens if not w in stop_words]
+        norm_sentence =  ' '.join(stemmed_tokens)
+        norm_x_test.append(norm_sentence)
+
+    x_train = norm_x_train
+    x_test = norm_x_test    
 
     # Process vocabulary
     vocab_processor = learn.preprocessing.VocabularyProcessor(MAX_DOCUMENT_LENGTH)
