@@ -1,5 +1,6 @@
 import datetime
 import hashlib
+import logging
 import redis
 import os
 import sys
@@ -30,6 +31,11 @@ NEWS_SOURCES = [
     'the-wall-street-journal',
     'the-washington-post'
 ]
+
+logger_format = '%(asctime)s - %(message)s'
+logging.basicConfig(format=logger_format)
+logger = logging.getLogger('news_monitor')
+logger.setLevel(logging.DEBUG)
 
 #connect redis_client and cloudAMQP
 redis_client = redis.StrictRedis(REDIS_HOST, REDIS_PORT)

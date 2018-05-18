@@ -16,6 +16,7 @@ would bias towards more recent results more.
 import news_class
 import os
 import sys
+import logging
 
 # import common package in parent directory
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'common'))
@@ -34,6 +35,11 @@ LOG_CLICKS_TASK_QUEUE_NAME = "news-manager-clicklog-queue"
 
 PREFERENCE_MODEL_TABLE_NAME = "user_preference_model"
 NEWS_TABLE_NAME = "news"
+
+LOGGER_FORMAT = '%(asctime)s - %(message)s'
+logging.basicConfig(format=LOGGER_FORMAT)
+LOGGER = logging.getLogger('click_log_processor')
+LOGGER.setLevel(logging.DEBUG)
 
 cloudAMQP_client = CloudAMQPClient(LOG_CLICKS_TASK_QUEUE_URL, LOG_CLICKS_TASK_QUEUE_NAME)
 
@@ -55,7 +61,7 @@ def handle_message(msg):
 
     # If model not exists, create a new one
     if model is None:
-        print("Creating preference model for new user: %s" % userId)
+        LOGGER.info('Creating preference model for new user: %s', userId)
         news_model = {'userId' : userId}
         preference = {}
         for i in news_class.classes:

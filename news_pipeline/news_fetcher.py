@@ -1,5 +1,6 @@
 import os
 import sys
+import logging
 
 from newspaper import Article
 
@@ -19,7 +20,7 @@ scrape_news_queue_client = CloudAMQPClient(SCRAPE_NEWS_TASK_QUEUE_URL, SCRAPE_NE
 
 def handle_message(msg):
     if msg is None or not isinstance(msg, dict):
-        print('message is broken')
+        logger.warning('message is broken')
         return
 
     task = msg
@@ -41,7 +42,7 @@ def run():
                 try:
                     handle_message(msg)
                 except Exception as e:
-                    print(e)
+                    logger.warning(e)
                     pass
 
             scrape_news_queue_client.sleep(SLEEP_TIME_IN_SECONDS)

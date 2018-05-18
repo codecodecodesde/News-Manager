@@ -1,5 +1,11 @@
 import json
+import logging
 import pika
+
+logger_format = '%(asctime)s - %(message)s'
+logging.basicConfig(format=logger_format)
+logger = logging.getLogger('cloud_amqp_client')
+logger.setLevel(logging.DEBUG)
 
 class CloudAMQPClient:
     def __init__(self, cloudAMQP_url, queue_name):
@@ -13,16 +19,16 @@ class CloudAMQPClient:
 
     def sendMessage(self, message):
         self.channel.basic_publish(exchange='', routing_key=self.queue_name, body=json.dumps(message))
-        print('Sent message to [%s]:\n%s' % (self.queue_name, message))
+        logger.debug("[x] send message to %s:%s", self.queue_name, message)
 
     def getMessage(self):
         method_frame, header_frame, body = self.channel.basic_get(self.queue_name)
         if method_frame:
-            print("Received message from [%s]:\n%s" % (self.queue_name, body))
+            logger.debug("[x] Received message from %s:%s", self.queue_name, body)
             self.channel.basic_ack(method_frame.delivery_tag)
             return json.loads(body.decode('utf-8'))
         else:
-            print("No message returned")
+            logger.debug("No message returned")
             return None
 
     def sleep(self, seconds):
