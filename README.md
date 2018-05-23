@@ -7,6 +7,7 @@ News Manager is a  real time news scraping and recommendation system. This syste
 
 ## Architecture
 ![architecture](architecture.jpg)
+
 __SOA__
 
 * __Client__: a single-page web application built by React.
